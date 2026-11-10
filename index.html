@@ -1,295 +1,130 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AV Control Systems Programmer</title>
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#0a0e13">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="AV Portfolio">
-<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
-<link rel="icon" href="icons/icon-192.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --bg: #0a0e13;
-    --surface: #10151c;
-    --line: #1e2731;
-    --text: #e5e9ee;
-    --text-dim: #8a97a6;
-    --text-faint: #52606e;
-    --accent: #3fb8ae;
-    --accent-dim: #256b65;
-    --tally: #d4553f;
-    --grotesk: 'Space Grotesk', sans-serif;
-    --sans: 'Inter', sans-serif;
-    --mono: 'JetBrains Mono', monospace;
-  }
-  *{ box-sizing: border-box; margin:0; padding:0; }
-  html, body{ height: 100%; }
-  body{
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--sans);
-    line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
-    overflow-x: hidden;
-  }
-  ::selection{ background: var(--accent-dim); color: var(--bg); }
-  a{ color: inherit; text-decoration: none; }
-
-  .wrap{ max-width: 900px; margin: 0 auto; padding: 0 32px; }
-
-  /* Titlebar-style header, evokes a control panel strip */
-  header{
-    position: sticky; top:0; z-index: 10;
-    background: rgba(10,14,19,0.9);
-    backdrop-filter: blur(8px);
-    border-bottom: 1px solid var(--line);
-  }
-  nav{
-    display:flex; align-items:center; justify-content:space-between;
-    padding: 16px 0;
-  }
-  .brand{ display:flex; align-items:center; gap: 10px; }
-  .led{ width:8px; height:8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 3px rgba(63,184,174,0.15); }
-  .brand span{ font-family: var(--mono); font-size: 12.5px; letter-spacing: 0.5px; color: var(--text-dim); }
-  .navlinks{ display:flex; gap: 26px; font-size: 13.5px; color: var(--text-dim); font-family: var(--mono); }
-  .navlinks a:hover{ color: var(--accent); }
-
-  /* Hero */
-  .hero{ padding: 90px 0 70px; border-bottom: 1px solid var(--line); }
-  .hero .tag{
-    font-family: var(--mono); font-size: 12.5px; color: var(--accent);
-    border: 1px solid var(--accent-dim); display:inline-block;
-    padding: 5px 12px; border-radius: 3px; margin-bottom: 26px;
-  }
-  h1{
-    font-family: var(--grotesk); font-weight: 500; font-size: 44px;
-    line-height: 1.15; letter-spacing: -0.5px; max-width: 640px;
-  }
-  h1 .accent{ color: var(--accent); }
-  .hero p.lede{
-    margin-top: 22px; font-size: 16.5px; color: var(--text-dim);
-    max-width: 560px; line-height: 1.75;
-  }
-  .hero .meta{
-    margin-top: 32px; display:flex; gap: 28px; flex-wrap: wrap;
-    font-family: var(--mono); font-size: 12.5px; color: var(--text-faint);
-  }
-  .hero .meta a{ color: var(--text-dim); border-bottom: 1px solid var(--text-faint); padding-bottom: 2px; }
-  .hero .meta a:hover{ color: var(--accent); border-color: var(--accent); }
-
-  section{ padding: 64px 0; border-bottom: 1px solid var(--line); }
-  section:last-of-type{ border-bottom: none; }
-  .section-head{ display:flex; align-items:baseline; justify-content: space-between; margin-bottom: 34px; }
-  h2{ font-family: var(--grotesk); font-weight: 500; font-size: 24px; }
-  .section-num{ font-family: var(--mono); font-size: 11.5px; color: var(--text-faint); }
-
-  /* Skills - grouped like a signal routing matrix */
-  .skill-groups{ display:grid; grid-template-columns: 1fr 1fr; gap: 40px; }
-  .skill-group h3{
-    font-family: var(--mono); font-size: 12px; color: var(--text-faint);
-    text-transform: lowercase; margin-bottom: 14px; letter-spacing: 0.3px;
-  }
-  .skill-list{ display:flex; flex-wrap: wrap; gap: 8px; }
-  .skill-list span{
-    font-size: 13.5px; padding: 7px 13px; border: 1px solid var(--line);
-    border-radius: 3px; color: var(--text); background: var(--surface);
-  }
-
-  /* Projects */
-  .project{
-    padding: 26px 0; border-bottom: 1px solid var(--line);
-    display: grid; grid-template-columns: 130px 1fr; gap: 24px;
-    transition: padding-left .2s;
-  }
-  .project:first-child{ padding-top: 0; }
-  .project:last-child{ border-bottom: none; padding-bottom: 0; }
-  .project:hover{ padding-left: 8px; }
-  .project .loc{ font-family: var(--mono); font-size: 12px; color: var(--text-faint); padding-top: 4px; line-height: 1.6; }
-  .project h3{ font-family: var(--grotesk); font-weight: 500; font-size: 19px; margin-bottom: 8px; transition: color .15s; }
-  .project:hover h3{ color: var(--accent); }
-  .project p{ color: var(--text-dim); font-size: 14.5px; max-width: 500px; }
-  .project .tags{ margin-top: 13px; display:flex; gap: 8px; flex-wrap: wrap; }
-  .project .tags span{
-    font-family: var(--mono); font-size: 11px; color: var(--text-dim);
-    border: 1px solid var(--line); padding: 3px 9px; border-radius: 3px;
-  }
-
-  /* Contact */
-  .contact p{ color: var(--text-dim); font-size: 15.5px; max-width: 480px; margin-bottom: 28px; }
-  .contact-row{ display:flex; gap: 30px; flex-wrap: wrap; font-size: 14px; font-family: var(--mono); }
-  .contact-row a{ color: var(--text); border-bottom: 1px solid var(--text-faint); padding-bottom: 2px; transition: border-color .15s, color .15s; }
-  .contact-row a:hover{ border-color: var(--accent); color: var(--accent); }
-
-  footer{
-    padding: 26px 0 40px; font-size: 12px; color: var(--text-faint);
-    font-family: var(--mono);
-    display:flex; justify-content: space-between;
-  }
-
-  @media (max-width: 680px){
-    h1{ font-size: 32px; }
-    .skill-groups{ grid-template-columns: 1fr; gap: 26px; }
-    .project{ grid-template-columns: 1fr; gap: 8px; }
-    .navlinks{ display:none; }
-    .hero{ padding: 60px 0 48px; }
-    section{ padding: 48px 0; }
-    footer{ flex-direction: column; gap: 8px; }
-  }
-  @media (prefers-reduced-motion: reduce){ *{ transition:none !important; } }
-  a:focus-visible, button:focus-visible{ outline: 2px solid var(--accent); outline-offset: 3px; }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Mohammed Althaf NK — AV Programmer specializing in Crestron, AMX, Q-SYS and AV system integration.">
+  <meta name="theme-color" content="#0b1220">
+  <title>Mohammed Althaf NK | AV Programmer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-<header>
-  <div class="wrap">
-    <nav>
-      <div class="brand"><span class="led"></span><span>AV.CONTROL.SYS</span></div>
-      <div class="navlinks">
-        <a href="#skills">Skills</a>
-        <a href="#work">Projects</a>
-        <a href="#contact">Contact</a>
-      </div>
+  <div class="page-glow glow-one"></div><div class="page-glow glow-two"></div>
+  <header class="site-header">
+    <a class="brand" href="#home"><span class="brand-mark">A</span><span>ALTHAF<span class="brand-dot">.</span></span></a>
+    <button class="menu-toggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+    <nav class="nav-links">
+      <a href="#about">About</a><a href="#expertise">Expertise</a><a href="#projects">Projects</a><a href="#experience">Experience</a><a href="#contact" class="nav-cta">Contact</a>
     </nav>
-  </div>
-</header>
+  </header>
 
-<div class="hero">
-  <div class="wrap">
-    <div class="tag">AV CONTROL SYSTEMS PROGRAMMER</div>
-    <h1>Programming the systems that make <span class="accent">rooms just work.</span></h1>
-    <p class="lede">
-      AV integration and control system programmer specializing in AMX, Crestron
-      and QSC platforms — from emergency control conference rooms to university
-      auditoriums and hotel meeting spaces across the region.
-    </p>
-    <div class="meta">
-      <span>Mohammed Althaf NK</span>
-      <a href="mailto:althafnk531@gmail.com">althafnk531@gmail.com</a>
-      <a href="tel:+971 566 98541">+971 566 98541</a>
-      <span>UAE / KSA</span>
-    </div>
-  </div>
-</div>
+  <main>
+    <section class="hero section-wrap" id="home">
+      <div class="hero-copy">
+        <div class="eyebrow"><span class="status-dot"></span> AUDIO VISUAL PROGRAMMER <span class="eyebrow-line"></span></div>
+        <h1>Connecting spaces.<br><span>Controlling experiences.</span></h1>
+        <p class="hero-intro">I’m Mohammed Althaf NK, an AV Programmer focused on intelligent control systems, intuitive touch-panel interfaces and dependable AV integration.</p>
+        <div class="hero-tags"><span>Crestron</span><span>AMX</span><span>Q-SYS</span><span>AV Integration</span></div>
+        <div class="hero-actions"><a class="button button-primary" href="#projects">Explore my work <span>↗</span></a><a class="text-link" href="#contact">Get in touch <span>→</span></a></div>
+      </div>
+      <div class="hero-visual">
+        <div class="visual-top"><span>CONTROL / INTEGRATION</span><span>01 — 04</span></div>
+        <div class="control-card">
+          <div class="control-card-head"><span class="tiny-label">SYSTEM STATUS</span><span class="live"><i></i> ONLINE</span></div>
+          <div class="screen-grid">
+            <div class="screen screen-large"><div class="screen-lines"></div><span>CONTROL</span></div>
+            <div class="screen"><div class="screen-icon">▦</div><span>VIDEO</span></div>
+            <div class="screen"><div class="screen-icon">◉</div><span>AUDIO</span></div>
+            <div class="screen"><div class="screen-icon">⌁</div><span>LIGHTING</span></div>
+          </div>
+          <div class="signal-row"><span>AV NETWORK</span><div class="signal-track"><i></i></div><b>STABLE</b></div>
+        </div>
+        <div class="floating-chip chip-one"><span>⌘</span> CONTROL SYSTEMS</div>
+        <div class="floating-chip chip-two"><span>◫</span> TOUCH UI DESIGN</div>
+        <div class="hero-orbit"></div>
+      </div>
+      <div class="hero-foot"><span>BASED IN THE UAE</span><span>3+ YEARS EXPERIENCE</span><span>SCROLL TO EXPLORE ↓</span></div>
+    </section>
 
-<section id="skills">
-  <div class="wrap">
-    <div class="section-head"><h2>Programming platforms</h2><span class="section-num">01</span></div>
-    <div class="skill-groups">
-      <div class="skill-group">
-        <h3>control programming</h3>
-        <div class="skill-list">
-          <span>AMX NetLinx</span>
-          <span>AMX Muse</span>
-          <span>Crestron SIMPL Windows</span>
-          <span>Crestron SIMPL+</span>
-          <span>Crestron Construct</span>
+    <section class="section-wrap about-section" id="about">
+      <div class="section-kicker">01 / ABOUT</div>
+      <div class="about-grid">
+        <h2>Technology should feel <span>effortless.</span></h2>
+        <div><p class="section-lead">I’m an Audio Visual Programmer with 3 years of experience designing, programming and supporting integrated AV environments across Saudi Arabia and the UAE.</p><p class="muted">My work brings together control processors, audio DSPs, video walls, conferencing systems, cameras and lighting into cohesive, easy-to-use experiences. I enjoy turning complex technical requirements into reliable systems and clean user interfaces.</p></div>
+      </div>
+      <div class="stat-row"><div><strong>03<span>+</span></strong><small>Years in AV</small></div><div><strong>60</strong><small>ECC rooms supported through project integration</small></div><div><strong>02</strong><small>Markets · KSA & UAE</small></div><div><strong>10<span>+</span></strong><small>Professional certifications / courses listed</small></div></div>
+    </section>
+
+    <section class="section-wrap expertise-section" id="expertise">
+      <div class="section-heading"><div><div class="section-kicker">02 / EXPERTISE</div><h2>What I work with<span>.</span></h2></div><p>From control logic to the final user experience, across the AV ecosystem.</p></div>
+      <div class="expertise-grid">
+        <article class="skill-card featured"><div class="skill-number">01</div><div class="skill-icon">⌘</div><h3>Control Programming</h3><p>Control system programming, automation logic, system integration and touch-panel UI design.</p><div class="skill-pills"><span>Crestron SIMPL</span><span>SIMPL+</span><span>AMX NetLinx</span><span>AMX Muse</span><span>Q-SYS Designer</span></div></article>
+        <article class="skill-card"><div class="skill-number">02</div><div class="skill-icon">◉</div><h3>Audio Systems</h3><p>DSP configuration, audio routing, conferencing audio and system tuning.</p><div class="skill-pills"><span>Q-SYS</span><span>Biamp</span><span>Shure</span><span>Extron</span><span>Bosch</span></div></article>
+        <article class="skill-card"><div class="skill-number">03</div><div class="skill-icon">▦</div><h3>Video & Displays</h3><p>Video wall processors, source switching, AV-over-IP and display distribution.</p><div class="skill-pills"><span>Barco</span><span>Datapath</span><span>RGBlink</span><span>NovaStar</span><span>Aveen</span></div></article>
+        <article class="skill-card"><div class="skill-number">04</div><div class="skill-icon">⌁</div><h3>Conferencing & Cameras</h3><p>Video conferencing platforms, camera control and room collaboration systems.</p><div class="skill-pills"><span>Cisco</span><span>Sony</span><span>Q-SYS</span><span>Aver</span><span>Bosch</span></div></article>
+        <article class="skill-card"><div class="skill-number">05</div><div class="skill-icon">☼</div><h3>Lighting Control</h3><p>Room lighting integration and automation through lighting control interfaces and gateways.</p><div class="skill-pills"><span>Lutron</span><span>DALI</span><span>Intesis</span><span>Crestron</span></div></article>
+        <article class="skill-card"><div class="skill-number">06</div><div class="skill-icon">⌁</div><h3>AV Networking</h3><p>Network-connected AV devices, encoders, decoders and distributed AV environments.</p><div class="skill-pills"><span>AMX AV-over-IP</span><span>Q-SYS</span><span>ZeeVee</span><span>AVCIT</span></div></article>
+      </div>
+    </section>
+
+    <section class="projects-section" id="projects">
+      <div class="section-wrap">
+        <div class="section-heading"><div><div class="section-kicker">03 / SELECTED WORK</div><h2>Projects in focus<span>.</span></h2></div><p>Selected AV programming and user-interface work from projects in Saudi Arabia and the UAE.</p></div>
+        <article class="project-block">
+          <div class="project-info"><div class="project-label">01 / CONTROL ROOM & UI DESIGN</div><h3>Saudi Aramco<br><span>Emergency Control Centre</span></h3><p>Contributed to AV integration across 60 Emergency Control Centre rooms in Saudi Arabia, developing control-system functionality and operator-focused touch-panel interfaces.</p><ul><li>Crestron, AMX and Q-SYS control programming</li><li>Video wall integration — Datapath, Barco, Aveen and RGBlink</li><li>Cisco and Bosch conferencing systems</li><li>Biamp, Extron and Shure audio DSP integration</li></ul><div class="project-tech"><span>CRESTRON</span><span>AMX</span><span>Q-SYS</span><span>UI DESIGN</span></div></div>
+          <div class="gallery gallery-three">
+            <figure class="gallery-main"><img src="assets/aramco-ecc-main-ui.png" alt="Saudi Aramco ECC operator control interface"><figcaption><span>01</span> ECC operator control interface</figcaption></figure>
+            <figure><img src="assets/aramco-ecc-start-screen.png" alt="Saudi Aramco ECC welcome screen UI"><figcaption><span>02</span> Welcome screen UI</figcaption></figure>
+            <figure><img src="assets/aramco-ecc-video-conference.png" alt="Saudi Aramco ECC video conference dial pad UI"><figcaption><span>03</span> Video conference interface</figcaption></figure>
+          </div>
+        </article>
+        <div class="project-divider"></div>
+        <article class="project-block project-reverse">
+          <div class="project-info"><div class="project-label">02 / HOSPITALITY AV INTEGRATION</div><h3>Rove Hotels<br><span>Dubai</span></h3><p>Programmed AV systems for conference rooms across multiple Rove Hotels properties in Dubai, bringing room video, audio and lighting controls together through a unified interface.</p><ul><li>AMX control system programming</li><li>AV-over-IP source selection and distribution</li><li>Lighting integration through Intesis gateways</li><li>Audio system integration using QSC</li></ul><div class="project-tech"><span>AMX</span><span>AV-OVER-IP</span><span>INTESIS</span><span>QSC</span></div></div>
+          <div class="gallery gallery-two">
+            <figure><img src="assets/rove-hotels-main-control.png" alt="Rove Hotels City Centre meeting room control UI"><figcaption><span>01</span> Meeting room control interface</figcaption></figure>
+            <figure><img src="assets/rove-hotels-start-screen.png" alt="Rove Hotels City Centre room welcome screen"><figcaption><span>02</span> Room welcome screen</figcaption></figure>
+          </div>
+        </article>
+        <div class="more-projects">
+          <div><span class="project-label">ADDITIONAL PROJECT EXPERIENCE</span><h3>Other environments I've worked on</h3></div>
+          <div class="project-mini"><b>NCEMA · UAE</b><span>Control rooms and conference room AV support</span></div>
+          <div class="project-mini"><b>Saudi Aramco · ISO Academy</b><span>Q-SYS control, AV distribution, Shure microphones and Lutron lighting</span></div>
+          <div class="project-mini"><b>PMU · Auditorium</b><span>AMX automation, video walls, conferencing and audio systems</span></div>
+          <div class="project-mini"><b>Abu Dhabi Investment Office</b><span>UAE project support and AV systems experience</span></div>
         </div>
       </div>
-      <div class="skill-group">
-        <h3>dsp &amp; audio</h3>
-        <div class="skill-list">
-          <span>QSC Q-SYS Programming</span>
-          <span>Biamp Tesira</span>
-          <span>Extron Configurator</span>
-        </div>
+    </section>
+
+    <section class="section-wrap experience-section" id="experience">
+      <div class="section-heading"><div><div class="section-kicker">04 / EXPERIENCE</div><h2>Career timeline<span>.</span></h2></div><p>Professional experience across system integration projects in the Gulf region.</p></div>
+      <div class="timeline">
+        <article><div class="timeline-date">2025 — 2026</div><div class="timeline-marker"></div><div class="timeline-content"><h3>Audio Visual Programmer <span>· CADD Emirates</span></h3><p class="timeline-location">United Arab Emirates</p><p>Delivered AV programming and technical support across UAE government and private-sector projects, specializing in Crestron, Q-SYS, AMX and user-interface design.</p></div></article>
+        <article><div class="timeline-date">2023 — 2025</div><div class="timeline-marker"></div><div class="timeline-content"><h3>Audio Visual Programmer <span>· Energy Project Support Company (ENPRO)</span></h3><p class="timeline-location">Al Khobar, Saudi Arabia</p><p>Programmed and integrated control systems, video walls, audio DSPs, conferencing systems, cameras, lighting controllers and network devices for major AV projects.</p></div></article>
       </div>
-      <div class="skill-group">
-        <h3>scope</h3>
-        <div class="skill-list">
-          <span>Complete AV Integration</span>
-          <span>Control System Design</span>
-          <span>Commissioning</span>
-        </div>
+    </section>
+
+    <section class="section-wrap credentials-section">
+      <div class="section-heading"><div><div class="section-kicker">05 / CREDENTIALS</div><h2>Certifications & education<span>.</span></h2></div></div>
+      <div class="credentials-grid">
+        <div class="credential-panel"><h3>Professional certifications</h3><div class="credential-list">
+          <div><b>Crestron</b><span>CTI-P201 Intermediate System Programming · CTI-P101 Foundations of Crestron Programming</span></div>
+          <div><b>AMX / HARMAN</b><span>AMX Programming Level 1 & 2 · AMX Muse Automator</span></div>
+          <div><b>Q-SYS</b><span>Control UCI Fundamentals In-Classroom · Control 101 · Level Zero & One</span></div>
+          <div><b>Biamp</b><span>Optimized Control Design · Tesira 101: Core Concepts · TesiraForte</span></div>
+          <div><b>Extron</b><span>Extron AV Associate Certification</span></div>
+          <div><b>Audinate</b><span>Dante Level 1, Level 2 & Level 3</span></div>
+        </div></div>
+        <div class="education-panel"><div class="section-kicker">EDUCATION</div><div class="education-icon">⌂</div><h3>Bachelor of Technology</h3><p>Electronics & Communication Engineering</p><b>Government Engineering College, Thrissur</b><span>Kerala, India · July 2023</span><div class="gpa">8.11 <small>CGPA</small></div></div>
       </div>
-      <div class="skill-group">
-        <h3>regions delivered</h3>
-        <div class="skill-list">
-          <span>Saudi Arabia</span>
-          <span>UAE</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+    </section>
 
-<section id="work">
-  <div class="wrap">
-    <div class="section-head"><h2>Selected projects</h2><span class="section-num">02</span></div>
-
-    <div class="project">
-      <div class="loc">Saudi Arabia<br>Dhahran</div>
-      <div>
-        <h3>Saudi Aramco — Emergency Control Conference Room</h3>
-        <p>Control system programming and complete AV integration for a mission-critical emergency control conference room.</p>
-        <div class="tags"><span>AMX NetLinx</span><span>Q-SYS</span><span>Video routing</span></div>
-      </div>
-    </div>
-
-    <div class="project">
-      <div class="loc">Saudi Arabia<br>Al Khobar</div>
-      <div>
-        <h3>Prince Mohammed Bin Fahd University — Auditorium</h3>
-        <p>End-to-end AV control programming for the university auditorium, covering presentation, audio reinforcement and room control.</p>
-        <div class="tags"><span>Crestron SIMPL</span><span>Biamp Tesira</span></div>
-      </div>
-    </div>
-
-    <div class="project">
-      <div class="loc">UAE<br>Multiple emirates</div>
-      <div>
-        <h3>Rove Hotels — Meeting Rooms (multiple properties)</h3>
-        <p>Control system programming for meeting room AV across several Rove Hotels properties in the UAE, standardized for consistent guest and staff operation.</p>
-        <div class="tags"><span>Extron Configurator</span><span>AMX Muse</span></div>
-      </div>
-    </div>
-
-    <div class="project">
-      <div class="loc">UAE</div>
-      <div>
-        <h3>Ncema — Control Room</h3>
-        <p>AV integration and control programming for a dedicated control room environment.</p>
-        <div class="tags"><span>Q-SYS</span><span>Crestron Construct</span></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="contact" class="contact">
-  <div class="wrap">
-    <div class="section-head"><h2>Get in touch</h2><span class="section-num">03</span></div>
-    <p>Available for AV integration and control system programming projects across the GCC.</p>
-    <div class="contact-row">
-      <a href="mailto:althafnk531@gmail.com">althafnk531@gmail.com</a>
-      <a href="tel:+971 566 98541">+971 566 98541</a>
-      <a href="https://www.linkedin.com/in/althaf-nk/?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_contact_details%3B0Kk8DBXbQS%2Bd%2B6UpSqFxGQ%3D%3D">LinkedIn</a>
-    </div>
-  </div>
-</section>
-
-<footer>
-  <div class="wrap" style="display:flex; justify-content:space-between; width:100%;">
-    <span>Mohammed Althaf NK</span>
-    <span id="year"></span>
-  </div>
-</footer>
-
-<script>
-  document.getElementById('year').textContent = new Date().getFullYear();
-
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('sw.js').catch(() => {});
-    });
-  }
-</script>
-
+    <section class="contact-section" id="contact"><div class="section-wrap contact-inner"><div class="section-kicker">06 / CONTACT</div><h2>Let’s build something<br><span>that works seamlessly.</span></h2><p>For AV programming, integration opportunities or project collaborations, feel free to get in touch.</p><div class="contact-actions"><a class="button button-primary" href="mailto:althafnk531@gmail.com">Email me ↗</a><a class="button button-outline" href="https://linkedin.com/althafnk" target="_blank" rel="noopener">LinkedIn ↗</a><a class="button button-outline" href="https://github.com/althafnk" target="_blank" rel="noopener">GitHub ↗</a></div><div class="contact-details"><a href="mailto:althafnk531@gmail.com">althafnk531@gmail.com</a><a href="tel:+971566698541">+971 56 669 8541 (UAE)</a><a href="tel:+919447048940">+91 94470 48940 (India)</a></div></div></section>
+  </main>
+  <footer class="site-footer"><a class="brand" href="#home"><span class="brand-mark">A</span><span>ALTHAF<span class="brand-dot">.</span></span></a><span>© <span id="year"></span> Mohammed Althaf NK · AV Programmer</span><a href="#home">Back to top ↑</a></footer>
+  <script src="script.js"></script>
 </body>
 </html>
